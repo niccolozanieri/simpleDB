@@ -1,8 +1,10 @@
 package simpledb;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+
+
 
 /**
  * Tuple maintains information about the contents of a tuple. Tuples have a
@@ -12,16 +14,22 @@ import java.util.Iterator;
 public class Tuple implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    private TupleDesc tupledesc=null;
+    private RecordId rid=null;
+    private ArrayList <Field> fields= new ArrayList<Field>();
+    
     /**
      * Create a new tuple with the specified schema (type).
      *
      * @param td
      *            the schema of this tuple. It must be a valid TupleDesc
      *            instance with at least one field.
+     *            
      */
     public Tuple(TupleDesc td) {
         // some code goes here
+    	this.tupledesc=td;
+    	
     }
 
     /**
@@ -29,7 +37,7 @@ public class Tuple implements Serializable {
      */
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        return this.tupledesc;
     }
 
     /**
@@ -38,7 +46,7 @@ public class Tuple implements Serializable {
      */
     public RecordId getRecordId() {
         // some code goes here
-        return null;
+        return this.rid;
     }
 
     /**
@@ -49,6 +57,7 @@ public class Tuple implements Serializable {
      */
     public void setRecordId(RecordId rid) {
         // some code goes here
+    	this.rid=rid;
     }
 
     /**
@@ -61,6 +70,13 @@ public class Tuple implements Serializable {
      */
     public void setField(int i, Field f) {
         // some code goes here
+    	if (fields.size()>i)
+    		fields.set(i,f);
+    	else {
+    		fields.add(f);
+    		
+    	}
+    	
     }
 
     /**
@@ -71,7 +87,11 @@ public class Tuple implements Serializable {
      */
     public Field getField(int i) {
         // some code goes here
-        return null;
+    	if (fields.size()<i) {
+    		return null;
+    	}
+        return fields.get(i);
+    	
     }
 
     /**
@@ -83,8 +103,15 @@ public class Tuple implements Serializable {
      * where \t is any whitespace (except a newline)
      */
     public String toString() {
+    	String res="";
+    	for (Field f: fields) {
+    		res.concat(" ");
+    		res.concat(f.toString());
+    		
+    	}
+    	
         // some code goes here
-        throw new UnsupportedOperationException("Implement this");
+        return res;
     }
 
     /**
@@ -94,7 +121,7 @@ public class Tuple implements Serializable {
     public Iterator<Field> fields()
     {
         // some code goes here
-        return null;
+        return fields.iterator();
     }
 
     /**
@@ -103,5 +130,7 @@ public class Tuple implements Serializable {
     public void resetTupleDesc(TupleDesc td)
     {
         // some code goes here
+    	this.tupledesc=null;
+    	
     }
 }
