@@ -21,15 +21,19 @@ public class Catalog {
 	
 	private HashMap<Integer, CatalogItem> items;
 
-	private class CatalogItem {
+	class CatalogItem {
 	    private DbFile file;
 	    private String name;
 	    private String pkeyField;
 	    
-	    private CatalogItem(DbFile file, String name, String pkeyField) {
+	     private CatalogItem(DbFile file, String name, String pkeyField) {
 	    	this.file = file;
 	    	this.name = name;
 	    	this.pkeyField = pkeyField;
+	    }
+	     
+	    public DbFile get_dbfile() {
+	    	return this.file;
 	    }
 	}
     /**
@@ -61,6 +65,10 @@ public class Catalog {
 
     public void addTable(DbFile file, String name) {
         addTable(file, name, "");
+    }
+    
+    public Collection<CatalogItem> get_items(){
+    	return this.items.values();
     }
 
     /**
