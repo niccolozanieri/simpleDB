@@ -55,12 +55,15 @@ public class Catalog {
      * @param pkeyField the name of the primary key field
      */
     public void addTable(DbFile file, String name, String pkeyField) {
-    	if(this.items.get(file.getId()) != null) {
-    		this.items.replace(file.getId(), new CatalogItem(file, name, pkeyField));
-    	} else {
-    		 this.items.put(file.getId(), new CatalogItem(file, name, pkeyField));
+    	try {
+    		int existingId = this.getTableId(name);
+    		
+    		this.items.remove(existingId);
+        	this.items.put(file.getId(), new CatalogItem(file, name, pkeyField));
+
+    	} catch(NoSuchElementException e) {
+        	this.items.put(file.getId(), new CatalogItem(file, name, pkeyField));
     	}
-       
     }
 
     public void addTable(DbFile file, String name) {
