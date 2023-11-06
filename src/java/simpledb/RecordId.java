@@ -55,10 +55,10 @@ public class RecordId implements Serializable {
         
     	if (o instanceof RecordId) {
     		RecordId rid = (RecordId) o;
-    		if((this.pid == rid.getPageId()) && (this.tupleno == rid.getTupleNumber()))
-    			return true;
-    		else 
-    			return false;	
+    		boolean result = this.pid.equals(rid.getPageId()) && (this.tupleno == rid.getTupleNumber());
+    		
+    		return result;
+    			
     	}
     	else
     		return false;
@@ -74,7 +74,8 @@ public class RecordId implements Serializable {
     @Override
     public int hashCode() {
         // some code goes here
-        return Integer.parseInt(this.pid.toString() + this.tupleno.toString());
+    	String code = String.format("%d%d%d", this.pid.getTableId(), this.pid.getPageNumber(), this.tupleno);
+        return Integer.parseInt(code);
     }
 
 }
