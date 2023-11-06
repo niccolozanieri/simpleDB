@@ -2,6 +2,7 @@ package simpledb;
 
 import java.util.*;
 import java.io.*;
+import java.lang.Math;
 
 /**
  * Each instance of HeapPage stores data for one page of HeapFiles and 
@@ -67,8 +68,11 @@ public class HeapPage implements Page {
     */
     private int getNumTuples() {        
         // some code goes here
-        return this.tuples.length;
-
+    	int pageSize = BufferPool.getPageSize();
+    	int tupleSize = this.td.getSize() * 8 + 1;
+    	int numTuples = (int) Math.floor((pageSize / tupleSize));
+    	
+        return numTuples;
     }
 
     /**
@@ -76,9 +80,10 @@ public class HeapPage implements Page {
      * @return the number of bytes in the header of a page in a HeapFile with each tuple occupying tupleSize bytes
      */
     private int getHeaderSize() {        
-        
         // some code goes here
-        return 0;
+    	int size = (int) Math.ceil(this.getNumTuples() / 8);
+    	
+        return size;
                  
     }
     
@@ -111,8 +116,8 @@ public class HeapPage implements Page {
      * @return the PageId associated with this page.
      */
     public HeapPageId getId() {
-    // some code goes here
-    return this.pid;
+        // some code goes here
+        return this.pid;
     }
 
     /**
@@ -288,8 +293,10 @@ public class HeapPage implements Page {
     /**
      * Returns true if associated slot on this page is filled.
      */
+    // TODO: check for invalid argument
     public boolean isSlotUsed(int i) {
         // some code goes here
+    	
         return false;
     }
 
