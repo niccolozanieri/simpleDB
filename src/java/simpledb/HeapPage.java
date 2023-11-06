@@ -287,7 +287,15 @@ public class HeapPage implements Page {
      */
     public int getNumEmptySlots() {
         // some code goes here
-        return 0;
+    	int result = 0;
+    	
+    	for(int i = 0; i < this.numSlots; i++) {
+    		if(!this.isSlotUsed(i)) {
+    			result++;
+    		}
+    	}
+    	
+        return result;
     }
 
     /**
@@ -296,8 +304,12 @@ public class HeapPage implements Page {
     // TODO: check for invalid argument
     public boolean isSlotUsed(int i) {
         // some code goes here
+    	System.out.print(i);
+    	int pos = (int) Math.floor(i / 8);
+    	byte flag = (byte) (this.header[pos] >> (i % 8));
+    	boolean result = (flag & 0x01) == 1;
     	
-        return false;
+        return result;
     }
 
     /**

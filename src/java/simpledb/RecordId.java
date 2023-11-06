@@ -23,8 +23,8 @@ public class RecordId implements Serializable {
     private Integer tupleno;
     public RecordId(PageId pid, int tupleno) {
         // some code goes here
-    	this.pid=pid;
-    	this.tupleno=tupleno;
+    	this.pid = pid;
+    	this.tupleno = tupleno;
     }
 
     /**
@@ -53,14 +53,12 @@ public class RecordId implements Serializable {
     public boolean equals(Object o) {
         // some code goes here
         
-        //domanda: ma devono essere uguali sia pageid che tupleno?
     	if (o instanceof RecordId) {
-    		RecordId rid= (RecordId)o;
-    		if (this.pid==rid.getPageId() && this.tupleno==rid.getTupleNumber())
+    		RecordId rid = (RecordId) o;
+    		if((this.pid == rid.getPageId()) && (this.tupleno == rid.getTupleNumber()))
     			return true;
     		else 
-    			return false;
-    				
+    			return false;	
     	}
     	else
     		return false;
@@ -77,8 +75,6 @@ public class RecordId implements Serializable {
     public int hashCode() {
         // some code goes here
         return Integer.parseInt(this.pid.toString() + this.tupleno.toString());
-        //la risposta alla domanda nel metodo equals impatta anche su questo metodo
-
     }
 
 }
