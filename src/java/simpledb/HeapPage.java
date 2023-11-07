@@ -304,7 +304,7 @@ public class HeapPage implements Page  {
     // TODO: check for invalid argument
     public boolean isSlotUsed(int i) {
         // some code goes here
-    	if(i > this.numSlots)
+    	if(i >= this.numSlots)
     		return false;
     	int pos = (int) Math.floor(i / 8.0);
     	byte flag = (byte) (this.header[pos] >> (i % 8));
@@ -329,14 +329,15 @@ public class HeapPage implements Page  {
         // some code goes here
     	
     	Iterator<Tuple> it = new Iterator<Tuple>() {
-    	    private int currentIndex=0;
+    	    private int currentIndex = 0;
     	    	    
 			@Override
 			public boolean hasNext() {
-				// TODO Auto-generated method stub
-				int tmp=currentIndex;
-				boolean result=false;
-				while(!result) {
+				int tmp = currentIndex;
+				boolean result = false;
+	
+							
+				while(!result && tmp < numSlots) {
 					if(isSlotUsed(tmp++))
 						result=true;
 				}
@@ -346,10 +347,10 @@ public class HeapPage implements Page  {
 			
 			@Override
 			public Tuple next() {
-				// TODO Auto-generated method stub
 				while(!isSlotUsed(currentIndex)) {
 					currentIndex++;
 				}
+				
 				return tuples[currentIndex++];
 			}
 				
