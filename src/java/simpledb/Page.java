@@ -10,7 +10,7 @@ package simpledb;
  * For recovery purposes, pages MUST have a single constructor of the form:
  *     Page(PageId id, byte[] data)
  */
-public interface Page {
+public interface Page{
 
     /**
      * Return the id of this page.  The id is a unique identifier for a page

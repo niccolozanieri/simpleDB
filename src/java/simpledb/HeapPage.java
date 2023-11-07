@@ -12,7 +12,7 @@ import java.lang.Math;
  * @see BufferPool
  *
  */
-public class HeapPage implements Page {
+public class HeapPage implements Page  {
 
     final HeapPageId pid;
     final TupleDesc td;
@@ -327,7 +327,36 @@ public class HeapPage implements Page {
      */
     public Iterator<Tuple> iterator() {
         // some code goes here
-        return null;
+    	
+    	Iterator<Tuple> it = new Iterator<Tuple>() {
+    	    private int currentIndex=0;
+    	    	    
+			@Override
+			public boolean hasNext() {
+				// TODO Auto-generated method stub
+				int tmp=currentIndex;
+				boolean result=false;
+				while(!result) {
+					if(isSlotUsed(tmp++))
+						result=true;
+				}
+				
+				return result;
+			}
+			
+			@Override
+			public Tuple next() {
+				// TODO Auto-generated method stub
+				while(!isSlotUsed(currentIndex)) {
+					currentIndex++;
+				}
+				return tuples[currentIndex++];
+			}
+				
+    	};
+    	return it;
+    	
+    	
     }
 
 }
