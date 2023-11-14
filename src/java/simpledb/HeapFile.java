@@ -25,10 +25,18 @@ public class HeapFile implements DbFile {
 	
 	private File file;
 	private TupleDesc tupledesc;
+    private RandomAccessFile randFile;
+	
     public HeapFile(File f, TupleDesc td) {
         // some code goes here
     	this.file=f;
     	this.tupledesc=td;
+    	try {
+    		this.randFile = new RandomAccessFile(f, "rw");
+    	} catch(FileNotFoundException e) {
+    		e.printStackTrace();
+    	}
+    	
     }
 
     /**
@@ -68,7 +76,35 @@ public class HeapFile implements DbFile {
     // see DbFile.java for javadocs
     public Page readPage(PageId pid) {
         // some code goes here
-        return this.readPage(pid);
+    	int pageNo = pid.getPageNumber();
+    	int offset = BufferPool.getPageSize() * pageNo;
+    	
+    	try {
+			this.randFile.seek(offset);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	byte[] data = new byte[BufferPool.getPageSize()];
+    	
+    	for(int i = 0; i < BufferPool.getPageSize(); i++) {
+    		try {
+				data[i] = this.randFile.readByte();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	
+    	Page result = null;
+		try {
+			result = new HeapPage((HeapPageId)pid, data);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return result;
     }
 
     // see DbFile.java for javadocs
@@ -84,7 +120,8 @@ public class HeapFile implements DbFile {
      */
     public int numPages() {
         // some code goes here
-        return 0;
+    	int result = (int)(file.length() / BufferPool.getPageSize());
+        return result;
     }
 
     // see DbFile.java for javadocs
