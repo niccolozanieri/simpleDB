@@ -70,13 +70,10 @@ public class Tuple implements Serializable {
      */
     public void setField(int i, Field f) {
         // some code goes here
-    	if (fields.size()>i)
+    	if (fields.size() > i)
     		fields.set(i,f);
-    	else {
-    		fields.add(f);
-    		
-    	}
-    	
+    	else 
+    		fields.add(f);	
     }
 
     /**
@@ -103,11 +100,9 @@ public class Tuple implements Serializable {
      * where \t is any whitespace (except a newline)
      */
     public String toString() {
-    	String res="";
+    	String res = "";
     	for (Field f: fields) {
-    		res.concat(" ");
-    		res.concat(f.toString());
-    		
+    		res = res + " " + f.toString();
     	}
     	
         // some code goes here

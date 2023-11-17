@@ -29,6 +29,12 @@ public class SeqScan implements OpIterator {
      */
     public SeqScan(TransactionId tid, int tableid, String tableAlias) {
         // some code goes here
+    	this.tid = tid;
+    	this.tableId = tableid;
+    	this.tableAlias = tableAlias;
+        
+    	DbFile file = Database.getCatalog().getDatabaseFile(tableid);
+    	this.it = file.iterator(tid);
     }
 
     /**
@@ -37,7 +43,8 @@ public class SeqScan implements OpIterator {
      *       be the actual name of the table in the catalog of the database
      * */
     public String getTableName() {
-        return null;
+    	String result = Database.getCatalog().getTableName(this.tableId);
+        return result;
     }
 
     /**
@@ -46,7 +53,7 @@ public class SeqScan implements OpIterator {
     public String getAlias()
     {
         // some code goes here
-        return null;
+        return this.tableAlias;
     }
 
     /**
@@ -71,6 +78,7 @@ public class SeqScan implements OpIterator {
 
     public void open() throws DbException, TransactionAbortedException {
         // some code goes here
+    	this.it.open();
     }
 
     /**
@@ -85,26 +93,33 @@ public class SeqScan implements OpIterator {
      */
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        return Database.getCatalog().getTupleDesc(tableId);
     }
 
     public boolean hasNext() throws TransactionAbortedException, DbException {
         // some code goes here
-        return false;
+        return it.hasNext();
     }
 
     public Tuple next() throws NoSuchElementException,
             TransactionAbortedException, DbException {
         // some code goes here
-        return null;
+        return it.next();
     }
 
     public void close() {
         // some code goes here
+    	it.close();
     }
 
     public void rewind() throws DbException, NoSuchElementException,
             TransactionAbortedException {
         // some code goes here
+    	it.rewind();
     }
+    
+    private TransactionId tid;
+    private int tableId;
+    private String tableAlias;
+    private DbFileIterator it;
 }
