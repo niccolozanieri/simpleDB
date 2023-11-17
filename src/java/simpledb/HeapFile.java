@@ -60,7 +60,9 @@ public class HeapFile implements DbFile {
      */
     public int getId() {
         // some code goes here
-    	return this.file.getAbsoluteFile().hashCode();
+        Integer partial = this.file.getAbsoluteFile().hashCode();
+        int result = Integer.parseInt(partial.toString().substring(0, 5));
+    	return result;
     }
 
     /**
@@ -143,7 +145,8 @@ public class HeapFile implements DbFile {
     // see DbFile.java for javadocs
     public DbFileIterator iterator(TransactionId tid) {
         // some code goes here
-        return this.iterator(tid);
+    	
+    	return new HeapFileIterator(this, tid);
     }
 
 }

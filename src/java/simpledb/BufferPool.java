@@ -69,7 +69,7 @@ public class BufferPool {
      * @param pid the ID of the requested page
      * @param perm the requested permissions on the page
      */
-    public  Page getPage(TransactionId tid, PageId pid, Permissions perm)
+    public Page getPage(TransactionId tid, PageId pid, Permissions perm)
         throws TransactionAbortedException, DbException {
         // some code goes here
     	if (this.pages.containsKey(pid)) {
@@ -80,16 +80,16 @@ public class BufferPool {
     			throw new DbException("reached maximum");
     		}
     		else {
-    			Catalog catalog=Database.getCatalog();
-    			for(Catalog.CatalogItem c: catalog.get_items()) {
-    				DbFile db=c.get_dbfile();
-    				Page page_to_add= db.readPage(pid);
-    				pages.put(pid, page_to_add);
-    				return page_to_add;
-    				
+    			Catalog catalog = Database.getCatalog();
+    			for(Catalog.CatalogItem c : catalog.get_items()) {
+    				DbFile db = c.get_dbfile();
+    				if(db.getId() == pid.getTableId()) {
+    					Page page_to_add = db.readPage(pid);
+        				pages.put(pid, page_to_add);
+                        return page_to_add;
+    				}
     			}
     		}
-    		
     	}
     	throw new DbException("problem");
     	
