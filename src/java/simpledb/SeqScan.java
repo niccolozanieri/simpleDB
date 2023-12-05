@@ -32,9 +32,6 @@ public class SeqScan implements OpIterator {
     	this.tid = tid;
     	this.tableId = tableid;
     	this.tableAlias = tableAlias;
-        
-    	DbFile file = Database.getCatalog().getDatabaseFile(tableid);
-    	this.it = file.iterator(tid);
     }
 
     /**
@@ -70,6 +67,8 @@ public class SeqScan implements OpIterator {
      */
     public void reset(int tableid, String tableAlias) {
         // some code goes here
+    	this.tableId = tableid;
+    	this.tableAlias = tableAlias;
     }
 
     public SeqScan(TransactionId tid, int tableId) {
@@ -78,6 +77,8 @@ public class SeqScan implements OpIterator {
 
     public void open() throws DbException, TransactionAbortedException {
         // some code goes here
+    	DbFile file = Database.getCatalog().getDatabaseFile(this.tableId);
+    	this.it = file.iterator(tid);
     	this.it.open();
     }
 

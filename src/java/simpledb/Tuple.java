@@ -84,7 +84,7 @@ public class Tuple implements Serializable {
      */
     public Field getField(int i) {
         // some code goes here
-    	if (fields.size()<i) {
+    	if (fields.size() < i) {
     		return null;
     	}
         return fields.get(i);

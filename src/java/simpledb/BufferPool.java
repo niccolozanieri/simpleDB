@@ -91,8 +91,7 @@ public class BufferPool {
     			}
     		}
     	}
-    	throw new DbException("problem");
-    	
+    	throw new DbException("Couldn't find page with requested PageId");
     }
 
     /**

@@ -60,9 +60,7 @@ public class HeapFile implements DbFile {
      */
     public int getId() {
         // some code goes here
-        Integer partial = this.file.getAbsoluteFile().hashCode();
-        int result = Integer.parseInt(partial.toString().substring(0, 5));
-    	return result;
+    	return this.file.getAbsoluteFile().hashCode();
     }
 
     /**
