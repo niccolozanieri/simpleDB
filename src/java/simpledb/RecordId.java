@@ -75,7 +75,7 @@ public class RecordId implements Serializable {
     public int hashCode() {
         // some code goes here
     	String code = String.format("%d%d%d", this.pid.getTableId(), this.pid.getPageNumber(), this.tupleno);
-        return Integer.parseInt(code);
+        return code.hashCode();
     }
 
 }
