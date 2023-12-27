@@ -8,6 +8,8 @@ import java.util.*;
 public class Filter extends Operator {
 
     private static final long serialVersionUID = 1L;
+    private Predicate pred;
+    private OpIterator child;
 
     /**
      * Constructor accepts a predicate to apply and a child operator to read
@@ -19,30 +21,39 @@ public class Filter extends Operator {
      *            The child operator
      */
     public Filter(Predicate p, OpIterator child) {
+    	this.pred=p;
+    	this.child= child;
         // some code goes here
     }
 
     public Predicate getPredicate() {
         // some code goes here
-        return null;
+        return this.pred;
     }
 
     public TupleDesc getTupleDesc() {
         // some code goes here
-        return null;
+        return child.getTupleDesc();
     }
 
     public void open() throws DbException, NoSuchElementException,
             TransactionAbortedException {
         // some code goes here
+    	super.open();
+     	this.child.open();
+        	
     }
 
     public void close() {
         // some code goes here
+      	this.child.close();
+      	super.close();
+ 
     }
 
     public void rewind() throws DbException, TransactionAbortedException {
         // some code goes here
+    	child.rewind();
     }
 
     /**
@@ -57,7 +68,17 @@ public class Filter extends Operator {
     protected Tuple fetchNext() throws NoSuchElementException,
             TransactionAbortedException, DbException {
         // some code goes here
-        return null;
+    	
+        if(!child.hasNext())
+            return null;
+        Tuple t = child.next();
+        while(!pred.filter(t)) {
+            if(!child.hasNext())
+                return null;
+            t = child.next();
+        }
+        return t;
+    
     }
 
     @Override

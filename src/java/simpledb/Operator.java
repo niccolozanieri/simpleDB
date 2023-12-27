@@ -12,12 +12,13 @@ public abstract class Operator implements OpIterator {
     private static final long serialVersionUID = 1L;
 
     public boolean hasNext() throws DbException, TransactionAbortedException {
+    	
         if (!this.open)
             throw new IllegalStateException("Operator not yet open");
         
         if (next == null)
             next = fetchNext();
-        return next != null;
+        return next != null; 
     }
 
     public Tuple next() throws DbException, TransactionAbortedException,
@@ -59,7 +60,9 @@ public abstract class Operator implements OpIterator {
     private int estimatedCardinality = 0;
 
     public void open() throws DbException, TransactionAbortedException {
+    	
         this.open = true;
+        
     }
 
     /**
