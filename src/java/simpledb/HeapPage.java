@@ -121,6 +121,10 @@ public class HeapPage implements Page  {
         // some code goes here
         return this.pid;
     }
+    
+    public TupleDesc getTupleDesc() {
+    	return this.td;
+    }
 
     /**
      * Suck up tuples from the source file.
@@ -255,7 +259,10 @@ public class HeapPage implements Page  {
     	boolean found = false;
     	
     	for(Tuple tup : this.tuples) {
-    		if(tup != null && (tup.getRecordId() == t.getRecordId())) {
+    		
+			
+    		if(tup != null && (tup.getRecordId().equals(t.getRecordId()))) {
+    			
     			found = true;
     			break;
     		}
@@ -263,7 +270,7 @@ public class HeapPage implements Page  {
     		i++;
     	}
     	
-    	if(!this.isSlotUsed(i))
+    	if(!this.isSlotUsed(i) && found )
     		throw new DbException("Tuple slot is already empty");
     	
     	if(found)
@@ -420,4 +427,3 @@ public class HeapPage implements Page  {
     }
 
 }
-
