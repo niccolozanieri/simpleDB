@@ -250,6 +250,26 @@ public class HeapPage implements Page  {
     public void deleteTuple(Tuple t) throws DbException {
         // some code goes here
         // not necessary for lab1
+    	int i = 0;
+    	boolean found = false;
+    	
+    	for(Tuple tup : this.tuples) {
+    		if(tup != null && (tup.getRecordId() == t.getRecordId())) {
+    			found = true;
+    			break;
+    		}
+    		
+    		i++;
+    	}
+    	
+    	if(!this.isSlotUsed(i))
+    		throw new DbException("Tuple slot is already empty");
+    	
+    	if(found)
+    	    this.markSlotUsed(i, false);
+    	else {
+    		throw new DbException("Tuple not in the page");
+    	}
     }
 
     /**
@@ -319,6 +339,21 @@ public class HeapPage implements Page  {
     private void markSlotUsed(int i, boolean value) {
         // some code goes here
         // not necessary for lab1
+    	int pos = (int) Math.floor(i / 8.0);
+//    	
+//    	byte flag = (byte) (this.header[pos] >> (i % 8));
+//    	byte mask = 0x11;
+//    	
+//    	boolean result = (flag & 0x01) == 1;
+    	byte mask = (byte)(0x01 << (i % 8));
+    	
+    	if(!value) {
+    		mask = (byte)(~mask);
+    		this.header[pos] = (byte) (this.header[pos] & mask);
+    	} else {
+    		this.header[pos] = (byte) (this.header[pos] | mask);
+    	}
+    	
     }
 
     /**
