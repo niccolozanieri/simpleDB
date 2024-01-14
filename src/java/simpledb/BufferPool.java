@@ -136,6 +136,7 @@ public class BufferPool {
         throws IOException {
         // some code goes here
         // not necessary for lab1|lab2
+    	
     }
 
     /**
@@ -157,6 +158,8 @@ public class BufferPool {
         throws DbException, IOException, TransactionAbortedException {
         // some code goes here
         // not necessary for lab1
+    	HeapFile f=(HeapFile) Database.getCatalog().getDatabaseFile(tableId);
+    	f.insertTuple(tid, t);
     }
 
     /**
@@ -176,6 +179,11 @@ public class BufferPool {
         throws DbException, IOException, TransactionAbortedException {
         // some code goes here
         // not necessary for lab1
+    	
+    	HeapFile f=(HeapFile) Database.getCatalog().getDatabaseFile(t.getRecordId().getPageId().getTableId());
+    	f.deleteTuple(tid, t);
+    	
+    	
     }
 
     /**
