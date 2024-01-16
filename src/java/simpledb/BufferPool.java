@@ -3,6 +3,7 @@ package simpledb;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -76,20 +77,20 @@ public class BufferPool {
     		return this.pages.get(pid);
     	}
     	else {
-    		if (this.pages.size()+1>=this.max_pages) {
-    			throw new DbException("reached maximum");
+    		if (this.pages.size() + 1 >= this.max_pages) {
+    			this.evictPage();
     		}
-    		else {
-    			Catalog catalog = Database.getCatalog();
-    			for(Catalog.CatalogItem c : catalog.get_items()) {
-    				DbFile db = c.get_dbfile();
-    				if(db.getId() == pid.getTableId()) {
-    					Page page_to_add = db.readPage(pid);
-        				pages.put(pid, page_to_add);
-                        return page_to_add;
-    				}
-    			}
-    		}
+    		
+			Catalog catalog = Database.getCatalog();
+			for(Catalog.CatalogItem c : catalog.get_items()) {
+				DbFile db = c.get_dbfile();
+				if(db.getId() == pid.getTableId()) {
+					Page page_to_add = db.readPage(pid);
+    				pages.put(pid, page_to_add);
+                    return page_to_add;
+				}
+			}
+    		
     	}
     	throw new DbException("Couldn't find page with requested PageId");
     }
@@ -195,6 +196,9 @@ public class BufferPool {
     public synchronized void flushAllPages() throws IOException {
         // some code goes here
         // not necessary for lab1
+    	for(PageId pid : this.pages.keySet()) {
+    		this.flushPage(pid);
+    	}
 
     }
 
@@ -209,6 +213,7 @@ public class BufferPool {
     public synchronized void discardPage(PageId pid) {
         // some code goes here
         // not necessary for lab1
+    	this.pages.remove(pid);
     }
 
     /**
@@ -218,6 +223,9 @@ public class BufferPool {
     private synchronized  void flushPage(PageId pid) throws IOException {
         // some code goes here
         // not necessary for lab1
+    	Page page = this.pages.get(pid);
+    	page.markDirty(false, null);
+    	Database.getCatalog().getDatabaseFile(pid.getTableId()).writePage(page);
     }
 
     /** Write all pages of the specified transaction to disk.
@@ -234,6 +242,20 @@ public class BufferPool {
     private synchronized  void evictPage() throws DbException {
         // some code goes here
         // not necessary for lab1
+    	ArrayList<PageId> ids = new ArrayList<>(this.pages.keySet());
+    	
+    	int size = ids.size();
+    	int idx = new Random().nextInt(size);
+    	
+    	PageId pid = ids.get(idx);
+    	
+    	try {
+    		this.flushPage(pid);
+    		this.discardPage(pid);
+    	} catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    	
     }
 
 }

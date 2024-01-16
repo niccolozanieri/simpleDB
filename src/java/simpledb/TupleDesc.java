@@ -9,6 +9,9 @@ import java.util.stream.Collectors;
  */
 public class TupleDesc implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+    private ArrayList<TDItem> items;
+    
     /**
      * A help class to facilitate organizing the information of each field
      * */
@@ -34,12 +37,14 @@ public class TupleDesc implements Serializable {
         public String toString() {
             return fieldName + "(" + fieldType + ")";
         }
+        
         public Type getType() {
         	return this.fieldType;
         }
+        
         public String getName() {
         	return this.fieldName;        
-        	}
+        }
        
     }
 
@@ -52,9 +57,6 @@ public class TupleDesc implements Serializable {
         // some code goes here
         return items.iterator();
     }
-
-    private static final long serialVersionUID = 1L;
-    private ArrayList<TDItem> items;
 
     /**
      * Create a new TupleDesc with typeAr.length fields with fields of the
@@ -165,16 +167,21 @@ public class TupleDesc implements Serializable {
     public int fieldNameToIndex(String name) throws NoSuchElementException {
         // some code goes here
     	
-    	for (int i=0; i<this.items.size(); i++) {
-    		    		if (this.items.get(i).fieldName!=null) {
-    		if ( this.items.get(i).fieldName.equals(name)) {
-    			return i;
-    		}
+    	for (int i = 0; i < this.items.size(); i++) {
+    		
+    		if (this.items.get(i).fieldName != null) {
+    			
+    			System.out.println("" + this.items.get(i));
+    			System.out.println("" + name);
+	    		if ( this.items.get(i).fieldName.equals(name)) {
+	    			return i;
+	    		}
+	    		
     		}
     	}
     	
     		
-    	throw new NoSuchElementException();
+    	throw new NoSuchElementException("" + this.items.size());
     }
 
     /**
