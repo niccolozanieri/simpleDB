@@ -111,7 +111,7 @@ public class HeapFile implements DbFile {
     public void writePage(Page page) throws IOException {
         // some code goes here
     	
-    	this.randFile.seek(page.getId().getPageNumber()*Database.getBufferPool().getPageSize());
+    	this.randFile.seek(page.getId().getPageNumber() * Database.getBufferPool().getPageSize());
     	this.randFile.write(page.getPageData());
       //TODO close file?
     }
@@ -154,12 +154,52 @@ public class HeapFile implements DbFile {
     	//if there is no space, we create a new page
     	HeapPageId pid =new HeapPageId(this.getId(), this.numPages()); 
     	HeapPage newp= new HeapPage(pid, new byte[bf.getPageSize()]);
-    	newp.insertTuple(t);
     	writePage(newp);
+    	newp.insertTuple(t);
     	return new ArrayList<Page> (Arrays.asList(newp));   	
         
         
     }
+    
+//    public ArrayList<Page> insertTuple(TransactionId tid, Tuple t)
+//            throws DbException, IOException, TransactionAbortedException {
+//        // some code goes here
+//     
+//     BufferPool bf= Database.getBufferPool();
+//     
+//     try {
+//      int i=0;
+//      HeapPageId pid = new HeapPageId(this.getId(), i);
+//      HeapPage hp=(HeapPage)bf.getPage(tid,pid, Permissions.READ_WRITE);
+//      
+//      while(hp!=null) {
+//       
+//       hp=(HeapPage)bf.getPage(tid,pid, Permissions.READ_WRITE);
+//       
+//       if(hp.getNumEmptySlots()>0) {
+//        try {
+//            hp.insertTuple(t);
+//           }
+//           catch (DbException d) {
+//            throw new DbException(d.getMessage()); //should not happen
+//           }
+//           return new ArrayList<Page> (Arrays.asList(hp));
+//           
+//       }
+//       
+//       i++;
+//       
+//      }
+//     } catch(DbException e) {
+//      HeapPageId pid =new HeapPageId(this.getId(), this.numPages()); 
+//         HeapPage newp= new HeapPage(pid, new byte[bf.getPageSize()]);
+//         newp.insertTuple(t);
+//         return new ArrayList<Page> (Arrays.asList(newp)); 
+//      
+//     }
+//     //if there is no space, we create a new page
+//     return null;
+//    }
 
     // see DbFile.java for javadocs
     public ArrayList<Page> deleteTuple(TransactionId tid, Tuple t) throws DbException,
