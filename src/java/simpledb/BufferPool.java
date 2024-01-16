@@ -159,7 +159,12 @@ public class BufferPool {
         // some code goes here
         // not necessary for lab1
     	HeapFile f=(HeapFile) Database.getCatalog().getDatabaseFile(tableId);
-    	f.insertTuple(tid, t);
+    	ArrayList<Page> dirtyPages = f.insertTuple(tid, t);
+    	
+    	for(Page page : dirtyPages) {
+    		page.markDirty(true, tid);
+    		this.pages.put(page.getId(), page);
+    	}
     }
 
     /**
@@ -178,12 +183,8 @@ public class BufferPool {
     public  void deleteTuple(TransactionId tid, Tuple t)
         throws DbException, IOException, TransactionAbortedException {
         // some code goes here
-        // not necessary for lab1
-    	
     	HeapFile f=(HeapFile) Database.getCatalog().getDatabaseFile(t.getRecordId().getPageId().getTableId());
     	f.deleteTuple(tid, t);
-    	
-    	
     }
 
     /**
