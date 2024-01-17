@@ -168,15 +168,10 @@ public class TupleDesc implements Serializable {
         // some code goes here
     	
     	for (int i = 0; i < this.items.size(); i++) {
-    		
     		if (this.items.get(i).fieldName != null) {
-    			
-    			System.out.println("" + this.items.get(i));
-    			System.out.println("" + name);
-	    		if ( this.items.get(i).fieldName.equals(name)) {
+	    		if ( this.items.get(i).fieldName.compareTo(name) == 0) {
 	    			return i;
 	    		}
-	    		
     		}
     	}
     	
