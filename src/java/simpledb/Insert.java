@@ -36,7 +36,7 @@ public class Insert extends Operator {
     	this.finished=false;
     	
     	if (!child.getTupleDesc().equals(Database.getCatalog().getDatabaseFile(this.tableId).getTupleDesc()))
-    		throw new DbException("The tuple desc don't match");
+    		throw new DbException("The tuple desc doesn't match");
     }
 
     public TupleDesc getTupleDesc() {
