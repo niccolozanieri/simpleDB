@@ -82,7 +82,7 @@ public class HeapFile implements DbFile {
     	try {
 			this.randFile.seek(offset);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO: should be handled with exceptions
 			e.printStackTrace();
 		}
     	
@@ -92,7 +92,7 @@ public class HeapFile implements DbFile {
     		try {
 				data[i] = this.randFile.readByte();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				// TODO: should be handled with exceptions
 				e.printStackTrace();
 			}
     	}
@@ -101,7 +101,7 @@ public class HeapFile implements DbFile {
 		try {
 			result = new HeapPage((HeapPageId)pid, data);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO: should be handled with exceptions
 			e.printStackTrace();
 		}
         return result;
@@ -113,7 +113,6 @@ public class HeapFile implements DbFile {
     	
     	this.randFile.seek(page.getId().getPageNumber() * Database.getBufferPool().getPageSize());
     	this.randFile.write(page.getPageData());
-      //TODO close file?
     }
 
     /**
@@ -140,7 +139,7 @@ public class HeapFile implements DbFile {
     		if(hp.getNumEmptySlots()>0 && hp.getTupleDesc().equals(t.getTupleDesc())) { //if there are empty slots, insert tuple
     			
     			try {
-    				hp.insertTuple(t); //TODO recordId
+    				hp.insertTuple(t);
     			}
     			catch (DbException d) {
     				throw new DbException(d.getMessage()); //should not happen

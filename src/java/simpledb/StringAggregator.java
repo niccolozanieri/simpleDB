@@ -63,7 +63,7 @@ public class StringAggregator implements Aggregator {
 			StringField f =(StringField) tup.getField(afield);
     		this.map.get(field).add(f.getValue());
     	} else {
-    		// TODO
+    		// TODO: should be handled with exceptions
     	}
     }
 
@@ -79,7 +79,7 @@ public class StringAggregator implements Aggregator {
         // some code goes here
     	if(this.gbfield == Aggregator.NO_GROUPING) {
         	ArrayList<Tuple> iterable = new ArrayList<>();
-        	Type[] types = new Type[] { Type.INT_TYPE }; // TODO: is int ok for returning avg?
+        	Type[] types = new Type[] { Type.INT_TYPE };
         	String[] fields = new String[] { "aggregateVal" };
         	TupleDesc td = new TupleDesc(types, fields);
         	ArrayList<String> list = this.map.get(new IntField(42));
@@ -102,7 +102,7 @@ public class StringAggregator implements Aggregator {
             
         } else {
         	ArrayList<Tuple> iterable = new ArrayList<>();
-        	Type[] types = new Type[] { gbfieldtype, Type.INT_TYPE }; // TODO: is int ok for returning avg?
+        	Type[] types = new Type[] { gbfieldtype, Type.INT_TYPE };
         	String[] fields = new String[] { "groupVal", "aggregateVal" };
         	TupleDesc td = new TupleDesc(types, fields);
         	

@@ -109,7 +109,6 @@ public class Join extends Operator {
     protected Tuple fetchNext() throws TransactionAbortedException, DbException {
         // some code goes here
     	
-    	// TODO: change while loops if we have time
     	while (child1.hasNext() || t1!=null){
     		if (t1==null) {
     		t1=child1.next();
@@ -155,7 +154,7 @@ public class Join extends Operator {
     		this.child1 = children[0];
     		this.child2 = children[1];
     	} else {
-    		// TODO
+    		// TODO: should be handled with exceptions
     	}
     }
 

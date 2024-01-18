@@ -23,7 +23,7 @@ public class HeapFileIterator implements DbFileIterator {
 		if(page instanceof HeapPage) {
 			this.currentIt = ((HeapPage)page).iterator();
 		} else {
-			// TODO
+			// TODO: should be handled with exceptions
 		}
 		
 		this.open = true;
@@ -44,7 +44,7 @@ public class HeapFileIterator implements DbFileIterator {
 					if(page instanceof HeapPage) {
 						result = ((HeapPage)page).iterator().hasNext();
 					} else {
-						// TODO
+						// TODO: should be handled with exceptions
 					}
 				}
 			}
@@ -71,7 +71,7 @@ public class HeapFileIterator implements DbFileIterator {
 						
 						result = this.currentIt.next();
 					} else {
-						// TODO
+						// TODO: should be handled with exceptions
 					}
 				}
 			}
@@ -84,7 +84,6 @@ public class HeapFileIterator implements DbFileIterator {
 
 	@Override
 	public void rewind() throws DbException, TransactionAbortedException {
-		// TODO Auto-generated method stub
 		if(open) {
 			this.currentPage = 0;
 			
@@ -95,7 +94,7 @@ public class HeapFileIterator implements DbFileIterator {
 			if(page instanceof HeapPage) {
 				this.currentIt = ((HeapPage)page).iterator();
 			} else {
-				// TODO
+				// TODO: should be handled with exceptions
 			}
 		}
         
@@ -103,7 +102,7 @@ public class HeapFileIterator implements DbFileIterator {
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
+
         this.open = false;
 	}
 	

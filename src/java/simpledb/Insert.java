@@ -41,7 +41,7 @@ public class Insert extends Operator {
 
     public TupleDesc getTupleDesc() {
         // some code goes here
-    	Type[] types = new Type[] {Type.INT_TYPE }; // TODO: is int ok for returning avg?
+    	Type[] types = new Type[] {Type.INT_TYPE };
     	String[] fields = new String[] { null };
     	TupleDesc t=new TupleDesc(types, fields);
         return t;

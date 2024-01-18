@@ -320,7 +320,6 @@ public class HeapPage implements Page  {
      */
     public void markDirty(boolean dirty, TransactionId tid) {
         // some code goes here
-    	// TODO: CHECK
 	    this.dirty = dirty;
 	    
 	    if(this.dirty) {
@@ -357,7 +356,6 @@ public class HeapPage implements Page  {
     /**
      * Returns true if associated slot on this page is filled.
      */
-    // TODO: check for invalid argument
     public boolean isSlotUsed(int i) {
         // some code goes here
     	if(i >= this.numSlots)
