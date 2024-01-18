@@ -169,6 +169,7 @@ public class HeapFile implements DbFile {
     	HeapPage hp= (HeapPage)bf.getPage(tid, t.getRecordId().getPageId(), Permissions.READ_WRITE);
     	try {
     		hp.deleteTuple(t);
+		return  new ArrayList<Page> (Arrays.asList(hp));
     	}
     	catch(DbException d) {
     		throw new DbException(d.getMessage());
