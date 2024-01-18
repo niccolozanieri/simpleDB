@@ -153,9 +153,10 @@ public class HeapFile implements DbFile {
     	}
     	//if there is no space, we create a new page
     	HeapPageId pid = new HeapPageId(this.getId(), this.numPages()); 
-    	HeapPage newp = new HeapPage(pid, new byte[bf.getPageSize()]);
-    	writePage(newp);
+    	HeapPage newp = new HeapPage(pid, new byte[BufferPool.getPageSize()]);
     	newp.insertTuple(t);
+    	writePage(newp);
+
     	return new ArrayList<Page> (Arrays.asList(newp));   	
         
         
@@ -174,9 +175,7 @@ public class HeapFile implements DbFile {
     	catch(DbException d) {
     		throw new DbException(d.getMessage());
     	}
-    	
-        return null;
-        
+    	        
     }
 
     // see DbFile.java for javadocs
