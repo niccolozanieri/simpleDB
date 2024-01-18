@@ -185,7 +185,12 @@ public class BufferPool {
         throws DbException, IOException, TransactionAbortedException {
         // some code goes here
     	HeapFile f=(HeapFile) Database.getCatalog().getDatabaseFile(t.getRecordId().getPageId().getTableId());
-    	f.deleteTuple(tid, t);
+    	ArrayList<Page> dirtyPages = f.deleteTuple(tid, t);
+    	
+    	for(Page page : dirtyPages) {
+    		page.markDirty(true, tid);
+    		this.pages.put(page.getId(), page);
+    	}
     }
 
     /**
